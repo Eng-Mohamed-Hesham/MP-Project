@@ -8,4 +8,4 @@ first system need to store students grades then make some fundamental operations
 1- sort all students grades \
 2- recieve user requests to ask for grade by id \
 3- perform binary search technique to search for id then get grade \
-4- then repeat step 2 again until user ask no more requests \
+4- then repeat step 2 again until user ask no more requests
