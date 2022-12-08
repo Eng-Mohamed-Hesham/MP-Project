@@ -6,7 +6,6 @@ struct student_info
     unsigned short Id;
     unsigned short marks;
 };
-
 unsigned short number_of_students = 0;
 struct student_info arr_of_students[1000];
 unsigned short i;
@@ -15,6 +14,7 @@ void show_grades(struct student_info in[1000]);
 void bubbleSort_using_IDS(struct student_info arr[1000], int n);
 void bubbleSort_using_Marks(struct student_info arr[1000], int n);
 void swap(struct student_info *s1, struct student_info *s2);
+unsigned short Binary_Search_Using_Id(struct student_info arr[1000], int n);
 
 void main(void)
 {
@@ -29,7 +29,7 @@ void main(void)
     }
     printf("*******************Stored Marks***********************\n");
     label:
-        printf("choose (1) to show your list of students\nchoose (2) to sort the list using Ids of students\nchoose (3) to sort the list using Marks of students\nchoose (4) to exit\n");
+        printf("choose (1) to show your list of students:\nchoose (2) to sort the list using Ids of students:\nchoose (3) to sort the list using Marks of students:\nchoose (4) to Search about Student:\nAnother to exit:\n");
         unsigned int choose;
         scanf("%u", &choose);
         switch (choose)
@@ -47,6 +47,10 @@ void main(void)
             goto label;
             break;
         case 4:
+            Binary_Search_Using_Id(arr_of_students, number_of_students);
+            goto label;
+            break;
+        case 5:
             return;
             break;
         default:
@@ -94,3 +98,39 @@ void swap(struct student_info *s1, struct student_info *s2)
     (*s1) = (*s2);
     *s2 = temp;
 }
+unsigned short Binary_Search_Using_Id(struct student_info arr[1000], int n){
+    printf("Enter Student's ID:");
+    int x;  scanf("%d", &x);
+    bubbleSort_using_IDS(arr, n);
+    int l = 0, r = n-1, ans = -1;
+    while (l <= r){
+        int mid = (l+r) >> 1;
+        if(arr[mid].Id == x){
+            ans = arr[mid].marks;
+            break;
+        }   
+        else if(arr[mid].Id > x)    r = mid - 1;
+        else    l = mid + 1;
+    }
+    if(ans != -1) printf("Student's ID: %d and his Mark: %hu\n", x, ans);
+    else    printf("No Student found with this ID %d\n", x);
+}
+unsigned short Binary_Search_Using_Id(struct student_info arr[1000], int n){
+    printf("Enter Student's ID:");
+    int x;  scanf("%d", &x);
+    bubbleSort_using_IDS(arr, n);
+    int l = 0, r = n-1, ans = -1;
+    while (l <= r){
+        int mid = (l+r) >> 1;
+        if(arr[mid].Id == x){
+            ans = arr[mid].marks;
+            break;
+        }   
+        else if(arr[mid].Id > x)    r = mid - 1;
+        else    l = mid + 1;
+    }
+    if(ans != -1) printf("Student's ID: %d and his Mark: %hu\n", x, ans);
+    else    printf("No Student found with this ID %d\n", x);
+}
+
+
