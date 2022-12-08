@@ -115,22 +115,4 @@ unsigned short Binary_Search_Using_Id(struct student_info arr[1000], int n){
     if(ans != -1) printf("Student's ID: %d and his Mark: %hu\n", x, ans);
     else    printf("No Student found with this ID %d\n", x);
 }
-unsigned short Binary_Search_Using_Id(struct student_info arr[1000], int n){
-    printf("Enter Student's ID:");
-    int x;  scanf("%d", &x);
-    bubbleSort_using_IDS(arr, n);
-    int l = 0, r = n-1, ans = -1;
-    while (l <= r){
-        int mid = (l+r) >> 1;
-        if(arr[mid].Id == x){
-            ans = arr[mid].marks;
-            break;
-        }   
-        else if(arr[mid].Id > x)    r = mid - 1;
-        else    l = mid + 1;
-    }
-    if(ans != -1) printf("Student's ID: %d and his Mark: %hu\n", x, ans);
-    else    printf("No Student found with this ID %d\n", x);
-}
-
 
