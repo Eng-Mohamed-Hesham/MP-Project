@@ -112,7 +112,7 @@ unsigned short Binary_Search_Using_Id(struct student_info arr[1000], int n){
         else if(arr[mid].Id > x)    r = mid - 1;
         else    l = mid + 1;
     }
-    if(ans != -1) printf("Student's ID: %d and his Mark: %hu\n", x, ans);
+    if(ans >= 0) printf("Student's ID: %d and his Mark: %hu\n", x, ans);
     else    printf("No Student found with this ID %d\n", x);
 }
 
