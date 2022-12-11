@@ -108,6 +108,7 @@ unsigned short Linear_Search(struct student_info arr[1000], int n){
             ok = 1;
         }  
     }
-    
+    if(ok) printf("Student's ID: %d, his Mark: %hu\n", x, mark);
+    else    printf("No Student found with this ID %d\n", x);
 }
 
