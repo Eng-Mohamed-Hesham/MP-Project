@@ -1,35 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-struct student_info
-{
-    unsigned short Id;
-    unsigned short marks;
-};
+void show_grades(unsigned short arr[]);
 unsigned short number_of_students = 0;
-struct student_info arr_of_students[1000];
-unsigned short i;
-
-void show_grades(struct student_info in[1000]);
-void bubbleSort_using_IDS(struct student_info arr[1000], int n);
-void bubbleSort_using_Marks(struct student_info arr[1000], int n);
-void swap(struct student_info *s1, struct student_info *s2);
-unsigned short Linear_Search(struct student_info arr[1000], int n);
+unsigned short arr_of_students[1000];
+unsigned short x;
 
 void main(void)
 {
     printf("Enter the number of students(DOES NOT EXCEED 1000): ");
     scanf("%hu", &number_of_students);
-    for (i = 0; i < number_of_students; i++)
-    { // putting id and mark into the array of struct!
+    for (int i = 0; i < number_of_students; i++)
+    {
         printf("Enter the ID of student[%hu]: ", i + 1);
-        scanf("%hu", &arr_of_students[i].Id);
+        scanf("%hu", &x);
         printf("Enter the mark of student[%hu]: ", i + 1);
-        scanf("%hu", &arr_of_students[i].marks);
+        scanf("%hu", &arr_of_students[x]);
     }
     printf("*******************Stored Marks***********************\n");
     label:
-        printf("choose (1) to show your list of students:\nchoose (2) to sort the list using Ids of students:\nchoose (3) to sort the list using Marks of students:\nchoose (4) to Search for Student's mark:\nAnother to exit:\n");
+        printf("choose (1) to show your list of students:\nchoose (2) to show grade of student using Id of student:\nchoose (3) to add Mark for student:\nchoose (4) to modify grade of student:\nchoose another to exit:\n");
         unsigned int choose;
         scanf("%u", &choose);
         switch (choose)
@@ -39,15 +28,15 @@ void main(void)
             goto label;
             break;
         case 2:
-            bubbleSort_using_IDS(arr_of_students, number_of_students);
+            show_mark(arr_of_students);
             goto label;
             break;
         case 3:
-            bubbleSort_using_Marks(arr_of_students, number_of_students);
+            Add_Student(arr_of_students);
             goto label;
             break;
         case 4:
-            Linear_Search(arr_of_students, number_of_students);
+            modify_mark(arr_of_students);
             goto label;
             break;
         case 5:
@@ -58,57 +47,50 @@ void main(void)
         }
 }
 
-void show_grades(struct student_info arr[1000])
+void show_grades(unsigned short arr[])
 {
-    for (i = 0; i < number_of_students; i++)
-    { // print students info
-        printf("student[%hu] id is %hu and mark is %hu \n", i + 1, arr[i].Id, arr[i].marks);
-    }
-}
-
-void bubbleSort_using_IDS(struct student_info arr[1000], int n)
-{
-    int i, j;
-    for (i = 0; i < n - 1; i++)
+    for (int i = 0; i < number_of_students; i++)
     {
-        for (j = 0; j < n - i - 1; j++)
-        {
-            if (arr[j].Id > arr[j + 1].Id)
-                swap(&arr[j], &arr[j + 1]);
-        }
+        if(arr[i] != -1)    printf("student[%hu] id is %hu \t mark is %hu \n", i + 1, arr[i], arr[i]);
     }
 }
 
-void bubbleSort_using_Marks(struct student_info arr[1000], int n)
+
+
+void show_mark(unsigned short arr[])
 {
-    int i, j;
-    for (i = 0; i < n - 1; i++)
-    {
-        for (j = 0; j < n - i - 1; j++)
-        {
-            if (arr[j].Id > arr[j + 1].Id)
-                swap(&arr[j], &arr[j + 1]);
-        }
+    printf("Enter the ID of student to show: \n");
+    scanf("%d", &x);
+    if(arr[x])    printf("student id is %hu and his mark is %hu \n", x, arr[x]);
+    else    printf("No grade for this student.\n");
+}
+void modify_mark(unsigned short arr[])
+{
+    int y;
+    printf("Enter the ID of student to show: \n");
+    scanf("%d", &x);
+    if(arr[x] != x){
+        unsigned short temp = arr[x];
+        printf("Enter the new grade of student to modify: \n");
+        scanf("%d", &y);
+        arr[x] = y;
+        printf("old grade is %hu and new grade is %hu \n", temp, arr[x]);
     }
+    else    printf("No grade for this student.\n");
 }
 
-void swap(struct student_info *s1, struct student_info *s2)
-{
-    struct student_info temp = *s1;
-    (*s1) = (*s2);
-    *s2 = temp;
-}
-unsigned short Linear_Search(struct student_info arr[1000], int n){
-    printf("Enter Student's ID:");
-    int x;  scanf("%d", &x);
-    int ok = 0, mark; 
-    for (int i = 0; i < n && !ok; i++){
-        if(arr[i].Id == x){
-            mark = arr[i].marks;
-            ok = 1;
-        }  
+void Add_Student(unsigned short arr[]){
+    printf("Enter the ID of student to Add: \n");
+    scanf("%d", &x);
+    if(arr[x]){
+        printf("There is a grade for this student\n");
     }
-    if(ok) printf("Student's ID: %d, his Mark: %hu\n", x, mark);
-    else    printf("No Student found with this ID %d\n", x);
+    else{
+        int y;
+        printf("Enter the grade for this student.\n");
+        scanf("%d", &y);
+        arr[x] = y;
+        printf("The grade is added for this student.\n");
+    }
 }
 
