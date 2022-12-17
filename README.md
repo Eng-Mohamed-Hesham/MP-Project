@@ -1,5 +1,5 @@
 # MP-Project
-## Classroom Grading System
+## Classroom Grading System.
 student system to handle grading mechanism in classroom for efficient service 
 so any student can get his grade easily.
 
