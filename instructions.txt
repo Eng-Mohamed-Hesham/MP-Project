@@ -1,0 +1,156 @@
+				Input / Output
+		      ------------------
+Rules:
+1- assembly can't take number consist of multidigits
+2- only it can take character by character
+3- only it can print character by character
+
+how operating system know the kind of i/o request??
+
+=> you should put specific value in AH register
+=> then you should call INT 21 which is resposible for i/o
+
+1- read character  => AH = 1  : then input is stored in AL
+2- write character => AH = 2  : then output read from DL
+3- read string     => AH = A  : then input is stored in DX
+4- write string    => AH = 9  : then output read from DX
+5- exit and end    => AH = 4C
+6- 
+
+=> another easy tool for output character or string or navigate to another line
+* include 'EMU8086.INC'
+
+* print character => PUTC 'A' / 65
+* print string 	  => PRINT "Hello friend"
+* PRINT_STRING
+* GET_STRING
+* SCAN_NUM
+* PRINT_NUM
+* CLEAR_SCREEN
+
+
+--------------------------------------------------------
+			
+			Variables Declaration
+		  -------------------------
+Rules: 
+	inside .DATA you can use following syntax in decleration
+	variable_name    data_type      value
+	data_type : DB ("Define byte") for byte for character or string
+	these two instructions must be like:
+		MOV AX, @data
+		MOV DS, AX
+		=> used to initialize DS
+	
+Examples:
+	msg "Hello man ", '$'
+	msg 65, 66, 67, '$'
+	x DB 16
+	s DB ?
+	a DB 31H, 32H, 33H, 34H, 35H
+	b 5 DUP(0)
+	
+--------------------------------------------------------
+
+=> printing new line on screen 
+		  
+MOV DL, 0AH
+MOV AH, 02H  
+INT 21H
+MOV DL, 0DH
+MOV AH, 02H  
+INT 21H 
+
+=> allocate segment for code part 
+ORG 100h
+
+--------------------------------------------------------
+			
+			Arithmatic Instruction
+		  -------------------------
+Addition :
+	ADD dest, src 
+	ADC dest, src ; but added with carry flag
+	
+Subtraction :
+	SUB dest, src
+	SBB dest, src ; but subtracted with carry flag
+	
+Multiplication :
+	MUL src	     
+	IMUL src
+	; AX = AL * src(1 byte)
+	; AX = AX * src(2 byte) (least 2 byte)
+	; DX = AX * src(2 byte) (most 2 byte)
+	
+Division :
+	DIV src
+	IDIV src
+	; AL = AX / src , AH = AX % src
+	; AX = AX / src , DX = AX % src
+	
+Increment :
+	INC dest => dest++
+	
+Decrement :
+	DEC dest => dest--	
+	
+Casting :
+	CBW : Byte to Word
+	CWD : Word to Double
+	
+-------------------------------------------------------
+	
+			Logical Instruction
+		  -------------------------
+AND dest, src
+OR  dest, src
+XOR dest, src
+NOT dest
+NEG dest
+CMP dest, src :
+	CMP instruction subtract src from dest
+	and affect on flags : AF, OF, SF, ZF, PF, CF
+
+	EX:
+		CMP CX, BX
+		----------
+		     CF   ZF   SF
+	CX = BX  0    1    0
+	CX > BX  0    0    0
+	CX < BX  1    0    1
+
+TEST dest, src
+
+SAL dest, shift_val
+SAR dest, shift_val
+SHL the same as SAL but save most left bit
+SHR the same as SAR but save least right bit
+
+-------------------------------------------------------
+	
+			Control Transfer Instruction
+		  -------------------------------
+1- Unconditional Jump
+	JMP label/register
+	
+2- Arithmetic Jump
+	CMP src1, src2
+		JA,JNBE     : Jump is src1 > src2
+		JAE,JNB,JNC : Jump if src1 >= src2
+		JB,JC,JNAC  : Jump if src1 < src2
+		JBE,JNA     : Jump if src1 <= src2
+		JZ,JE       : Jump if src1 == src2
+		JNZ,JNE     : Jump if src1 != src2
+	ADD BL, DH
+		JS          : Jump if sign flag = 1
+		JNS			: Jump if sign flag = 0
+		JCXZ        : Jump if CX = 0
+3- Uncondiotional Loop
+	LOOP label
+	
+4- Conditional Loop
+	LOOPZ, LOOPE    : loop while CX != 0 and Zero flag = 1
+	LOOPNE, LOOPNZ  : loop while CX != 0 and Zero flag = 0
+	
+5- CALL PROC
