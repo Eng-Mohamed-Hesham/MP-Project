@@ -9,7 +9,7 @@ include 'EMU8086.INC'
     
 .CODE 
 
-MAIN PROC
+LOAD_FROM-FILE PROC
     MOV AX, @DATA
     MOV DS, AX
  ;----- opening existing file -----;
@@ -41,7 +41,7 @@ MAIN PROC
         
         JUSTLOOP:
             MOV AX, ARRAY[SI]
-            ;CALL PRINTING   
+            CALL PRINTING   
             ADD SI, 2
             ;XOR DX, DX     ;MOV DX, 2CH    ;MOV AH, 02H    ;INT 21H     ;instead of using these three lines use it; 
             PRINT ", "
@@ -57,8 +57,37 @@ MAIN PROC
     MOV AH, 4CH
     INT 21H
                              
-                            
+     PRINTING PROC
+        MOV CX, 0 ;    intialize the counter;
+        MOV DX, 0
+        PUSHDIGIT:
+            CMP AX, 0
+            JZ PRINTNUMBER
+            MOV BX, 10
+            DIV BX;  --> AX = AX/BX   , DX = AX%BX
+            PUSH DX
+            INC CX; ---> increament the counter
+            XOR DX, DX ;---> MOV DX, 0
+            JMP PUSHDIGIT
+            
+            
+        PRINTNUMBER:
+            CMP CX, 0
+            JZ EXITPRINGING
+            XOR DX, DX
+            POP DX
+            ADD DX, 48 ;--> ;add 48 so that it represents the ASCII value of digit 
+        
+            MOV AH, 02H
+            INT 21H
+            DEC CX
+            JMP PRINTNUMBER
+            
+            
+        EXITPRINGING:    
+            
+                PRINTING ENDP                        
                             
       
     RET 
-    END MAIN
+    END LOAD_FROM-FILE
