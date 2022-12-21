@@ -7,6 +7,9 @@ unsigned short x;
 
 void main(void)
 {
+    for (int y = 0; y < 1000; y++){
+        arr_of_students[y] = -1;
+    }
     printf("Enter the number of students(DOES NOT EXCEED 1000): ");
     scanf("%hu", &number_of_students);
     for (int i = 1; i <= number_of_students; i++)
