@@ -3,25 +3,26 @@
 include emu8086.inc 
 .data
   
-    msg1 dw ' 1- Add new students. $'
+    msg1 dw 0AH, 0DH,'1- Add new students. $'
     msg2 dw 0AH, 0DH, '2- Search for a student grade using id. $'
     msg3 dw 0AH, 0DH, '3- Edit student grade. $'
-    msg4 dw 0AH, 0DH, '4- Edit student id. $'
-    msg5 dw 0AH, 0DH, 'Enter a valid choice of the above: $'
-    msg6 dw 0Ah, 0DH, 'Enter a valid number of students (less than 255): $'
-    msg7 dw 0Ah, 0DH, 'Enter a valid id (less than 255): $'
-    msg8 dw 0Ah, 0DH, 'valid id $'
-    choice db ?
-
-;struct :
-    ;dw id
-    ;dw grade    
-    
+    msg4 dw 0AH, 0DH, '4- Display list of grades. $'
+    msg5 dw 0AH, 0DH, '5- Remove a student. $'
+    msg10 dw 0AH, 0DH, '6- End the program. $'
+    msg11 dw 0AH, 0DH, 'Do you want to continue the program? (Y to CONTINUE) or (any other key to END) $'
+    msg12 dw 0AH, 0DH, '## Invalid Entry. ## $'
+    msg6 dw 0AH, 0DH, '     --> Enter a valid choice of the above: $'
+    msg7 dw 0Ah, 0DH, '         --> Enter a valid number of students (less than 65535): $'
+    msg8 dw 0Ah, 0DH, '         --> Enter a valid id (less than 65535): $'
+    msg9 dw 0Ah, 0DH, '         --> Enter the updated grade: $'
+    choice db ?   
 
 .code
+    
     mov ax, @data
     mov ds, ax
-    lea si, msg1
+@Main_func:    
+    lea dx, msg1
     mov ah, 9
     int 21h
     lea dx, msg2
@@ -30,20 +31,30 @@ include emu8086.inc
     int 21h
     lea dx, msg4
     int 21h
-    
+    lea dx, msg5
+    int 21h
+    lea dx, msg10
+    int 21h
+  
     Enter_choice:    
-        lea dx, msg5
+        lea dx, msg6
         mov ah, 9
         int 21h
         mov ah, 1
         int 21h
         cmp al, '1'
         jae Second_cmp1
+        lea dx, msg12
+        mov ah, 9
+        int 21h
         jmp Enter_choice
     
     Second_cmp1:         
-        cmp al, '4'
-        jbe valid_choice 
+        cmp al, '6'
+        jbe valid_choice
+        lea dx, msg12
+        mov ah, 9
+        int 21h 
         jmp Enter_choice
     
     valid_choice:
@@ -52,13 +63,17 @@ include emu8086.inc
         cmp al, '2'
         je @Search_student
         cmp al, '3'
-        je @Edit_grade
+        je @Edit_grade            
         cmp al, '4'
-        je @Edit_id
+        je @Display_list_of_grades
+        cmp al, '5'
+        je @Remove_student
+        cmp al, '6'
+        je @End_program
         
         
      @Add_students:
-        lea dx, msg6
+        lea dx, msg7
         mov ah, 9
         int 21h
         call SCAN_NUM     
@@ -67,33 +82,64 @@ include emu8086.inc
         jmp @Add_students
      
         Second_cmp2:   
-            cmp cx, 0ffh
+            cmp cx, 0ffffh
             jbe valid_number_of_students
             jmp @Add_students
      
         valid_number_of_students:
             ;// code
+            jmp @End_program     
      
      
      @Search_student:
         call ID_input_Validation
-        lea dx, msg8
-        mov ah, 9
-        int 21h  
-     
-     
+        ;// code
+        jmp @End_program
+        
+        
      @Edit_grade:
         call ID_input_Validation
-        ;//code
-     
-     @Edit_id:
+        mov bx, cx
+        lea dx, msg9
+        mov ah, 9
+        int 21h
+        call SCAN_NUM
+        ;mov arr[bx], cx 
+        jmp @End_program
+        
+        
+     @Display_list_of_grades:
         call ID_input_Validation
-        ;//code 
+        ;//code
+        jmp @End_program
+        
+        
+     @Remove_student:
+        call ID_input_Validation 
+        ;// code
+        jmp @End_program
+        
+        
+     @End_program:
+          lea dx, msg11
+          mov ah, 9
+          int 21h
+          mov ah, 1
+          int 21h
+          cmp al, 'y'
+          je @Main_func
+          jne Else_if
+          Else_if:
+              cmp al, 'Y'
+              je @Main_func
+              jne Else
+          ELSE:
+          ;// Save data code
+          mov ah, 04ch
+          int 21h
      
-     
-     
-     ID_input_Validation proc near
-        INPUT: lea dx, msg7
+      ID_input_Validation proc near
+        INPUT: lea dx, msg8
         mov ah, 9
         int 21h
         call SCAN_NUM
@@ -102,16 +148,15 @@ include emu8086.inc
         jmp INPUT
     
         Second_cmp3:         
-            cmp cx, 0ffh
+            cmp cx, 0ffffh
             jbe END_proc 
             jmp INPUT
         
         END_proc:
-            ret
+      ret
       ID_input_Validation endp
         
      
-     DEFINE_SCAN_NUM   
-        
-     
+     DEFINE_SCAN_NUM
+     DEFINE_PRINT_NUM_UNS              
 END   
