@@ -74,12 +74,12 @@ void delet_student (unsigned short arr[])
     printf("Enter the ID of student you want to delete: \n");
     scanf("%d", &x);
     arr[x] = 0;
-    for (int i = x; i <= number_of_students-2; i++)
+    for (int i = x; i < number_of_students; i++)
     {
         arr[x] = arr[x+1];
     }
     number_of_students--;
-        printf("*******************student with id [%hu] has been Deleted!***********************\n", x);
+    printf("*******************student with id [%hu] has been Deleted!***********************\n", x);
 
 }
 
