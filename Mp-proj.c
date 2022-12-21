@@ -18,7 +18,7 @@ void main(void)
     }
     printf("*******************Stored Marks***********************\n");
 label:
-    printf("choose (1) to show your list of students:\nchoose (2) to show grade of student using Id of student:\nchoose (3) to add Mark for student:\nchoose (4) to modify grade of student:\nchoose another to exit:\n");
+    printf("choose (1) to show your list of students:\nchoose (2) to show grade of student using Id of student:\nchoose (3) to add Mark for student:\nchoose (4) to modify grade of student:\nchoose (5) to delete student:\nchoose another to exit:\n");
     unsigned int choose;
     scanf("%u", &choose);
     switch (choose)
