@@ -4,7 +4,7 @@ Student system to handle grading mechanism in classroom for efficient service
 so any student can get his grade easily.
 
 ## System Mechanism
-First system need to store students grades then make some fundamental operations \
+First system need to store students grades then make some fundamental operations:- \
 1- Recieve user requests to ask for grade by ID. \
 2- Recieve user requests to modify any grade. \
 3- Recieve user requests to add grade for new ID. \
