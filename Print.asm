@@ -1,28 +1,80 @@
+include emu8086.inc
+ORG 100h   
 
-ORG 100h
-
+.data          
+    print1 dw 0AH, 0DH,'the student id => $'
+    print2 dw 0AH, 0DH,'his grade => $'
+    num_of_students db 5                                           
+    array_name dw 10, 22, 30, 42, 50
 .CODE  
-
-    Print_students PROC
+    mov ax, @data
+    mov ds, ax
+    main proc
         
-        MOV CX, num_of_students   ; set the loop iterations
+        MOV di, 5   ; set the loop iterations
         LEA SI, array_name        ; load addres of the array of students   ;should be in ASCII
-                    
+        mov cx, 1
+                     
                                 
       next_value:
-        
-        MOV DL,a[SI]              ; get value from the array
+        print "the student id => "
+        mov dx, cx  
+        add dx, 48
         mov AH, 2
         int 21h
-        inc SI
+        inc cx
+        print " his grade => "
+        push cx
+        MOV ax,[SI]               ; get value from the array
+        call SplitNum                  ; to convert to ASCII
+        add si, 2
+                                 ;print it   what SI point to
+        CALL New_line
+        pop cx  
+        dec di
+        cmp di, 0
+                                   ; next word
+        JNZ next_value             ; CX++
+        mov ah, 4ch
+        int 21h         
+
+    main ENDP           ; End of the procedure
+    
+    SplitNum PROC		
+    	MOV CX,0
+    	MOV DX,0
+    	pushDigit:
+    		CMP AX, 0
+    		JZ popDigit	
+    		MOV BX, 10	
+    		DIV BX				
+    		PUSH DX			
+    		INC CX			
+    		XOR DX, DX
+    		JMP pushDigit
+    	popDigit:
+    		CMP CX,0
+    		JZ exit 
+    		XOR DX, DX
+    		POP DX
+    		ADD DX, 48
+    		mov AH, 2
+            int 21h
+    		DEC CX
+    		JMP popDigit
+    		
+    exit:
+        SplitNum ENDP
+        ret
+   New_line proc 
+    
         MOV DL, 0AH               ; New line
         MOV AH, 02H  
         INT 21H
         MOV DL, 0DH
         MOV AH, 02H  
-        INT 21H  
-                                  ; next BYTE
-      LOOP next_value             ; CX++
-        
-    RET                           ; Return to the caller
-    Print_students ENDP           ; End of the procedure
+        INT 21H
+    
+   New_line ENDP 
+   ret
+  
