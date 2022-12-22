@@ -2,11 +2,11 @@
 .STACK 100H
 
 .DATA
-    fname  DB 'grades.txt',0
+    fname  DB 'grades.txt', 0
     handle DW ?
     arr    DW 47, 52, 63, 58, 21
     space  DB 20H
-    V      DW DUP(0)
+    V      DW DUP(0) 
 .CODE
 
     MAIN PROC
@@ -43,6 +43,7 @@
         ;----- exiting -----;
         MOV AH, 4CH
         INT 21H
+        
     MAIN ENDP
         
     Open PROC  
