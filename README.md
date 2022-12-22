@@ -12,4 +12,4 @@ First system need to store students grades then make some fundamental operations
 5- Recieve user requests to delete student\
 6- Perform Linear Search technique to search for id then get grade. \
 7- Then repeat step 2 again until user ask no more requests.\
-8- After exiting program, the information must be stored in storage.\ 
+8- After exiting program, the information must be stored in storage.
