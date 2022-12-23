@@ -5,13 +5,13 @@ ORG 100h
     print1 dw 0AH, 0DH,'the student id => $'
     print2 dw 0AH, 0DH,'his grade => $'
     num_of_students db 5                                           
-    array_name dw 10, 22, 30, 42, 50
+    array_name db 1, 0, ' ', 2, 2, ' ',  3, 0,' ', 4, 2,' '
 .CODE  
     mov ax, @data
     mov ds, ax
     main proc
         
-        MOV di, 5   ; set the loop iterations
+        MOV di, 4   ; set the loop iterations
         LEA SI, array_name        ; load addres of the array of students   ;should be in ASCII
         mov cx, 1
                      
@@ -24,14 +24,18 @@ ORG 100h
         int 21h
         inc cx
         print " his grade => "
-        push cx
-        MOV ax,[SI]               ; get value from the array
-        call SplitNum                  ; to convert to ASCII
-        add si, 2
-                                 ;print it   what SI point to
+        MOV dx,[SI]
+        add dx, 48               ; get value from the array
+        mov AH, 02h
+        int 21h                 ; to convert to ASCII
+        add si, 1
+        MOV dx,[SI]
+        add dx, 48               ; get value from the array
+        mov AH, 02h
+        int 21h                        ;print it   what SI point to
         CALL New_line
-        pop cx  
         dec di
+        add si, 2
         cmp di, 0
                                    ; next word
         JNZ next_value             ; CX++
@@ -40,32 +44,6 @@ ORG 100h
 
     main ENDP           ; End of the procedure
     
-    SplitNum PROC		
-    	MOV CX,0
-    	MOV DX,0
-    	pushDigit:
-    		CMP AX, 0
-    		JZ popDigit	
-    		MOV BX, 10	
-    		DIV BX				
-    		PUSH DX			
-    		INC CX			
-    		XOR DX, DX
-    		JMP pushDigit
-    	popDigit:
-    		CMP CX,0
-    		JZ exit 
-    		XOR DX, DX
-    		POP DX
-    		ADD DX, 48
-    		mov AH, 2
-            int 21h
-    		DEC CX
-    		JMP popDigit
-    		
-    exit:
-        SplitNum ENDP
-        ret
    New_line proc 
     
         MOV DL, 0AH               ; New line
