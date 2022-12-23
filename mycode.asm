@@ -15,6 +15,7 @@ include emu8086.inc
     msg7 dw 0Ah, 0DH, '         --> Enter a valid number of students (less than 65535): $'
     msg8 dw 0Ah, 0DH, '         --> Enter a valid id (less than 65535): $'
     msg9 dw 0Ah, 0DH, '         --> Enter the updated grade: $'
+    
     choice db ?   
 
 .code
@@ -122,8 +123,14 @@ Print_students PROC
       next_value:
         
         MOV DL,a[SI]              ; get value from the array
+        add dl, 48                ; to convert to ASCII
+        
+        lea dx, print1
+        mov ah,  9
+        int 21h   
+                  
         mov AH, 2
-        int 21h
+        int 21h                   ;print it
         inc SI
         MOV DL, 0AH               ; New line
         MOV AH, 02H  
