@@ -16,11 +16,10 @@ so any student can get his grade easily.
 
 ## System Mechanism
 First system need to store students grades then make some fundamental operations:- \
-1- Recieve user requests to ask for grade by ID. \
-2- Recieve user requests to modify any grade. \
-3- Recieve user requests to add grade for new ID. \
-4- Recieve user requests to display the list of grades.\
-5- Recieve user requests to delete student.\
-6- Perform Linear Search technique to search for id then get grade. \
-7- Then repeat step 2 again until user ask no more requests.\
-8- After exiting program, the information must be stored in storage.
+1- Recieve user requests to add or modify grade of a given ID. \
+2- Recieve user requests to search for grade by ID. \
+3- Recieve user requests to display the list of grades.\
+4- Recieve user requests to delete student.\
+5- Then repeat until user ask no more requests.\
+6- After exiting program, data is saved in a file so it can be accessed again.
+    
