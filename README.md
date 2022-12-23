@@ -3,11 +3,11 @@
   2- Mhaamed Mamdouh.\
   3- Michael Mettry.\
   4- Mostafa Shoman.\
-  5- Mohamed Hesham.\
+  5- Mohamed Hesham.
 
 # Under the supervision of:
   Dr. Abdelhamid Attaby.\
-  Eng. Mahmoud Taha.\
+  Eng. Mahmoud Taha.
 
 # MP-Project
 ## Classroom Grading System.
