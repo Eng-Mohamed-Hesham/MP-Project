@@ -1,6 +1,6 @@
 # Team Members:
   1- Kariem Alaa El-dien Soliman.\
-  2- Mhaamed Mamdouh.\
+  2- Mohamed Mamdouh.\
   3- Michael Mettry.\
   4- Mostafa Shoman.\
   5- Mohamed Hesham.
