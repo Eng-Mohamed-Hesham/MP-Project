@@ -46,32 +46,7 @@ ORG 100h
 
     main ENDP           ; End of the procedure
     
-    SplitNum PROC		
-    	MOV CX,0
-    	MOV DX,0
-    	pushDigit:
-    		CMP AX, 0
-    		JZ popDigit	
-    		MOV BX, 10	
-    		DIV BX				
-    		PUSH DX			
-    		INC CX			
-    		XOR DX, DX
-    		JMP pushDigit
-    	popDigit:
-    		CMP CX,0
-    		JZ exit 
-    		XOR DX, DX
-    		POP DX
-    		ADD DX, 48
-    		mov AH, 2
-            int 21h
-    		DEC CX
-    		JMP popDigit
-    		
-    exit:
-        SplitNum ENDP
-        ret
+    
    New_line proc 
     
         MOV DL, 0AH               ; New line
