@@ -22,7 +22,6 @@
             CMP DI, 0
             JZ  endloop 
             MOV AL, arr[SI] 
-            
             MOV AH, 40H
             MOV BX, handle
             MOV CX, 1 
