@@ -2,7 +2,7 @@ include emu8086.inc
 ORG 100h   
 
 .data           
-    array_name dw 10, 22, 30, 42, 50
+        array_name db 1, 0, ' ', 2, 2, ' ',  3, 0,' ', 4, 2,' '
 .CODE  
     mov ax, @data
     mov ds, ax
@@ -11,8 +11,10 @@ ORG 100h
         
         LEA SI, array_name        ; load addres of the array of students   ;should be in ASCII
         mov [SI+bx], 0
+        mov [SI+bx+1], 0
+        mov [SI+bx+2], 0
         printn "Student deleted successfully!"
-        MOV di, 5   ; set the loop iterations
+        MOV di, 4   ; set the loop iterations
         mov cx, 1
                      
                                 
@@ -24,14 +26,18 @@ ORG 100h
         int 21h
         inc cx
         print " his grade => "
-        push cx
-        MOV ax,[SI]               ; get value from the array
-        call SplitNum                  ; to convert to ASCII
-        add si, 2
-       
+        MOV dx,[SI]
+        add dx, 48               ; get value from the array
+        mov AH, 02h
+        int 21h                 ; to convert to ASCII
+        add si, 1
+        MOV dx,[SI]
+        add dx, 48               ; get value from the array
+        mov AH, 02h
+        int 21h                        ;print it   what SI point to
         CALL New_line
-        pop cx  
         dec di
+        add si, 2
         cmp di, 0
                                    ; next word
         JNZ next_value             ; CX++
