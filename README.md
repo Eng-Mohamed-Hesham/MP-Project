@@ -14,7 +14,7 @@
 Student system to handle grading mechanism in classroom for efficient service. \
 system can store no more then (85) student grades .\
 
-## System Mechanism
+## System Mechanism 
 First system need to store students grades then make some fundamental operations:- \
 
 1- System begin to load all students gardes and save it in program data. \
