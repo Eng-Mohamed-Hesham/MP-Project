@@ -15,24 +15,24 @@ Student system to handle grading mechanism in classroom for efficient service.
 system can store no more then (85) student grades .
 
 ## System Mechanism 
-First system need to store students grades then make some fundamental operations:-
+* First system need to store students grades then make some fundamental operations:-
 
-1- System begin to load all students gardes and save it in program data. 
-2- Recieve user requests to add or edit grade of a given ID. 
-3- Recieve user requests to search for grade by ID. 
-4- Recieve user requests to display the list of grades.
-5- Recieve user requests to delete student.
-6- Then repeat until user ask no more requests.
-7- After exiting program, data is saved in a file so it can be accessed again. 
+1- System begin to load all students gardes and save it in program data. \
+2- Recieve user requests to add or edit grade of a given ID. \
+3- Recieve user requests to search for grade by ID. \
+4- Recieve user requests to display the list of grades. \
+5- Recieve user requests to delete student. \
+6- Then repeat until user ask no more requests. \
+7- After exiting program, data is saved in a file so it can be accessed again.  
     
 ### Loading Data from external storage
 * first program begin to open datafile (Grades.txt) in read mode. 
-* then loop over grades of students and set every grade to it's student id .
+* then loop over grades of students and set every grade to it's student id . 
 * so after loading operation system become able to perform other operation. 
 
 ### Adding / Editing Student Grade by Id
-* first you have to enter grade to set it to some id entered by user .
-* program begin to get id and grade and set that grade to this id .
+* first you have to enter grade to set it to some id entered by user . 
+* program begin to get id and grade and set that grade to this id . \
   so it update this grade if this id has previous grade and set a new grade if there no student here.
 
 ### Searching for Student Grade by Id
