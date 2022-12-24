@@ -16,7 +16,7 @@ ID          db  4            ;Max Nnumber of Characters Allowed (3).
             db  ?            ;Number of Characters Entered by User.
             db  4 dup(0)    ;Characters Entered by User. 
             
-Arr         db   3,9,' ',6,3,' ',,8,1,' ', 
+grades         db   3,9,' ',6,3,' ',,8,1,' ', 
 
             .code
 main proc                      
@@ -44,21 +44,21 @@ main proc
             mov ch, 0                        
             mov cl,ID_Length
                     
-Check3:
+labx:
             cmp ID[2][si], 029h     ; Compare Bl With Ascii Value of 01
-            jle EndPrgm
+            jle end_2
             inc si        
-            loop Check3
+            loop labx
             
             mov si, 0
             mov ch, 0                        
             mov cl,ID_Length
             
-Check4:       
+laby:       
             cmp ID[2][si], 039h     ; Compare Bl With Ascii Value of 09   
-            jg EndPrgm
+            jg end_2
             inc si 
-            loop Check4     
+            loop laby     
             
             
             mov si, 0
@@ -66,17 +66,17 @@ Check4:
             mov cl,ID_Length
             
             ; convert the 'char digit' to 'intger digit' by sub 48 from it  
-To_Digits2:  
+labz:  
             mov dl, ID[2][si]
             sub dl,48
             mov ID[2][si], dl
             inc si
-            loop To_Digits2
+            loop labz
             
-            jmp DoWork
+            jmp dowork_2
          
 
-EndPrgm:
+end_2:
                       mov ax, @data
             mov ds, ax
             mov ah, 09h
@@ -85,8 +85,8 @@ EndPrgm:
             mov ah,0x4C     ;DOS "terminate" function
             int 0x21
 
-DoWork:     
-            ; Get the Exact ID's index according to our Array of bytes
+dowork_2:     
+            ; Get the Exact ID's index according to our gradesay of bytes
             mov ax,1
             mov cl,ID_Length
             mov ch,0
@@ -94,24 +94,24 @@ DoWork:
             
                 
             cmp cl,1
-            je La2
+            je labb
             sub cl,1
             
             ; 10^x, to transfer the "string" input to real integer value
             push cx     
-        L:
+        laba:
             mul bl
-            loop L
+            loop laba
            
             pop cx
             inc cx
              
-        La2:    
+        labb:    
             mov si,0
             mov dx ,0
            
             ; calculate the ID by multiply each index by 10 power it's weight value
-        Get_ID:
+        get_id_2:
             push ax
             mul ID[2][si]
             
@@ -120,7 +120,7 @@ DoWork:
             div bl
             inc si
         
-            loop Get_ID
+            loop get_id_2
             
             mov ID_Value,dl
             mov al,dl
@@ -133,15 +133,15 @@ DoWork:
             mov si, ax
                        
             mov bx,0
-            mov bl,Arr[si]
+            mov bl,grades[si]
             inc si
-            mov bh,Arr[si]
-            jmp End_Msg
+            mov bh,grades[si]
+            jmp end_2
             
             
             
         
-        End_Msg:
+        end_2:
              mov ax, @data
             mov ds, ax
             

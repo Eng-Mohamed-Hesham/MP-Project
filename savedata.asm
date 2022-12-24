@@ -2,8 +2,8 @@
 .STACK 100H
 
 .DATA
-    fname  DB 'grades.txt', 0
-    handle DW ?
+    fname  DB 'Grades.txt', 0
+    fhand DW ?
     arr    DB 4, 7, ' ', 5, 2, ' ', 6, 3, ' ', 5, 8, ' ', 2, 1, ' '
     digit  DB ?
     space  DB 20H
@@ -16,14 +16,14 @@
         CALL Open
         
         MOV SI, 0     
-        MOV DI, 15
+        MOV DI, 255
         
         loopArr:
             CMP DI, 0
             JZ  endloop 
             MOV AL, arr[SI] 
             MOV AH, 40H
-            MOV BX, handle
+            MOV BX, fhand
             MOV CX, 1 
             CMP AL, ' ' 
             JZ takespace
@@ -52,13 +52,13 @@
         MOV DX, OFFSET(fname)      
         MOV AL, 1
         INT 21H
-        MOV handle, AX
+        MOV fhand, AX
     Open ENDP
     RET
     
     Close PROC
         MOV AH, 3EH
-        MOV DX, handle
+        MOV DX, fhand
         INT 21H
     Close ENDP
     RET

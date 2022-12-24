@@ -1,0 +1,30 @@
+< THE SYMBOL TABLE >  Search Function.exe_  --  emu8086 assembler version: 4.05 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00010     	-5        	SEGMENT   	(ITSELF)  
+ID_MSG                   	00000     	1         	VAR       	data      
+EXIT_MSG                 	00016     	1         	VAR       	data      
+ST_ID1                   	0003F     	1         	VAR       	data      
+ST_ID2                   	00055     	1         	VAR       	data      
+EXIT                     	0006A     	1         	VAR       	data      
+ID_LENGTH                	0008C     	1         	VAR       	data      
+ID_VALUE                 	0008D     	1         	VAR       	data      
+ID                       	0008E     	1         	VAR       	data      
+ARR                      	00094     	1         	VAR       	data      
+CODE                     	0001A     	-5        	SEGMENT   	(ITSELF)  
+MAIN                     	00000     	-1        	NEAR      	code      
+CHECK3                   	00027     	-1        	LABEL     	code      
+CHECK4                   	0003A     	-1        	LABEL     	code      
+TO_DIGITS2               	0004D     	-1        	LABEL     	code      
+ENDPRGM                  	0005D     	-1        	LABEL     	code      
+DOWORK                   	0006D     	-1        	LABEL     	code      
+L                        	00081     	-1        	LABEL     	code      
+LA2                      	00087     	-1        	LABEL     	code      
+GET_ID                   	0008D     	-1        	LABEL     	code      
+END_MSG                  	000B8     	-1        	LABEL     	code      
+===================================================================================================
+[ 12/24/2022  --  12:35:22 AM ] 
+< END >
+ 

@@ -2,7 +2,7 @@ include 'EMU8086.INC'
 .model small
 .stack 100
 .data 
-    buff        db  26        ;MAX NUMBER OF CHARACTERS ALLOWED (25).
+    buff    db  26        ;MAX NUMBER OF CHARACTERS ALLOWED (25).
             db  ?         ;NUMBER OF CHARACTERS ENTERED BY USER.
             db  26 dup(0) ;CHARACTERS ENTERED BY USER.
     fname1 dw "Grades.txt",0

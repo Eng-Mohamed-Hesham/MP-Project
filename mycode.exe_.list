@@ -1,0 +1,753 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+mycode.exe_ -- emu8086 assembler version: 4.05  
+ 
+[ 12/24/2022  --  3:14:18 AM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       include 'emu8086.inc'
+[   2]        :                                       .MODEL SMALL
+[   3]        :                                       .STACK 100H
+[   4]        :                                       
+[   5]        :                                       .DATA
+[   6]    0100: 0A 00 0D 00 31 2D 20 41 64 64 2F 45   msg1   dw 0AH, 0DH,'1- Add/Edit students. $'
+                64 69 74 20 73 74 75 64 65 6E 74 73 
+                2E 20 24 00                         
+[   7]    011C: 0A 00 0D 00 32 2D 20 53 65 61 72 63   msg2   dw 0AH, 0DH, '2- Search for a student grade using id. $'
+                68 20 66 6F 72 20 61 20 73 74 75 64 
+                65 6E 74 20 67 72 61 64 65 20 75 73 
+                69 6E 67 20 69 64 2E 20 24 00       
+[   8]    014A: 0A 00 0D 00 33 2D 20 44 69 73 70 6C   msg4   dw 0AH, 0DH, '3- Display list of grades. $'
+                61 79 20 6C 69 73 74 20 6F 66 20 67 
+                72 61 64 65 73 2E 20 24             
+[   9]    016A: 0A 00 0D 00 34 2D 20 52 65 6D 6F 76   msg5   dw 0AH, 0DH, '4- Remove a student. $'
+                65 20 61 20 73 74 75 64 65 6E 74 2E 
+                20 24                               
+[  10]    0184: 0A 00 0D 00 35 2D 20 45 6E 64 20 74   msg10  dw 0AH, 0DH, '5- End the program. $'
+                68 65 20 70 72 6F 67 72 61 6D 2E 20 
+                24 00                               
+[  11]    019E: 0A 00 0D 00 44 6F 20 79 6F 75 20 77   msg11  dw 0AH, 0DH, 'Do you want to continue the program? (Y to CONTINUE) or (any other key to END) $'
+                61 6E 74 20 74 6F 20 63 6F 6E 74 69 
+                6E 75 65 20 74 68 65 20 70 72 6F 67 
+                72 61 6D 3F 20 28 59 20 74 6F 20 43 
+                4F 4E 54 49 4E 55 45 29 20 6F 72 20 
+                28 61 6E 79 20 6F 74 68 65 72 20 6B 
+                65 79 20 74 6F 20 45 4E 44 29 20 24 
+                                                    
+[  12]    01F2: 0A 00 0D 00 23 23 20 49 6E 76 61 6C   msg12  dw 0AH, 0DH, '## Invalid Entry. ## $'
+                69 64 20 45 6E 74 72 79 2E 20 23 23 
+                20 24                               
+[  13]    020C: 0A 00 0D 00 20 2D 2D 3E 20 45 6E 74   msg6   dw 0AH, 0DH, ' --> Enter a valid choice of the above: $'
+                65 72 20 61 20 76 61 6C 69 64 20 63 
+                68 6F 69 63 65 20 6F 66 20 74 68 65 
+                20 61 62 6F 76 65 3A 20 24 00       
+[  14]    023A: 0A 00 0D 00 20 2D 2D 3E 20 45 6E 74   msg7   dw 0Ah, 0DH, ' --> Enter a valid number of students (less than 65535): $'
+                65 72 20 61 20 76 61 6C 69 64 20 6E 
+                75 6D 62 65 72 20 6F 66 20 73 74 75 
+                64 65 6E 74 73 20 28 6C 65 73 73 20 
+                74 68 61 6E 20 36 35 35 33 35 29 3A 
+                20 24                               
+[  15]    0278: 0A 00 0D 00 20 2D 2D 3E 20 45 6E 74   msg8   dw 0Ah, 0DH, ' --> Enter a valid id (less than 65535): $'
+                65 72 20 61 20 76 61 6C 69 64 20 69 
+                64 20 28 6C 65 73 73 20 74 68 61 6E 
+                20 36 35 35 33 35 29 3A 20 24       
+[  16]    02A6: 0A 00 0D 00 20 2D 2D 3E 20 45 6E 74   msg9   dw 0Ah, 0DH, ' --> Enter grade: $'
+                65 72 20 67 72 61 64 65 3A 20 24 00 
+                                                    
+[  17]    02BE: 0D 0A 45 6E 74 65 72 20 4E 65 77 20   Grade_Msg   db  0dh,0ah, "Enter New Student Grade:  $"
+                53 74 75 64 65 6E 74 20 47 72 61 64 
+                65 3A 20 20 24                      
+[  18]    02DB: 0D 0A 45 6E 74 65 72 20 4E 65 77 20   ID_Msg      db  0dh,0ah, "Enter New Student ID:  $"
+                53 74 75 64 65 6E 74 20 49 44 3A 20 
+                20 24                               
+[  19]    02F5: 57 72 6F 6E 67 20 56 61 6C 75 65 21   Exit_Msg    db 'Wrong Value! Please Try Again$'
+                20 50 6C 65 61 73 65 20 54 72 79 20 
+                41 67 61 69 6E 24                   
+[  20]    0313: 54 68 65 20 4E 65 77 20 53 74 75 64   Exit        db 'The New Student Has Added Successfully$'
+                65 6E 74 20 48 61 73 20 41 64 64 65 
+                64 20 53 75 63 63 65 73 73 66 75 6C 
+                6C 79 24                            
+[  21]    033A: 54 68 65 20 53 74 75 64 65 6E 74 20   St_ID1      db 'The Student with ID: $'
+                77 69 74 68 20 49 44 3A 20 24       
+[  22]    0350: 20 20 48 61 73 20 47 72 61 64 65 20   St_ID2      db '  Has Grade Value:  $'
+                56 61 6C 75 65 3A 20 20 24          
+[  23]    0365: 0A 00 0D 00 74 68 65 20 73 74 75 64   print1 dw 0AH, 0DH,'the student id => $'
+                65 6E 74 20 69 64 20 3D 3E 20 24 00 
+                                                    
+[  24]    037D: 0A 00 0D 00 68 69 73 20 67 72 61 64   print2 dw 0AH, 0DH,'his grade => $'
+                65 20 3D 3E 20 24                   
+[  25]    038F: 47 72 61 64 65 73 2E 74 78 74 00 00   fname dw "Grades.txt",0
+                                                    
+[  26]    039B: 00                                    digit  DB ?
+[  27]    039C: 20                                    space  DB 20H
+[  28]    039D: 00 00                                 fhand dw ?
+[  29]    039F: 00                                    Grade_Length      db  ?
+[  30]    03A0: 00                                    ID_Length         db  ?
+[  31]    03A1: 00                                    ID_Value          db  0
+[  32]    03A2: 03                                    New_Grade   db  3           ;Max Nnumber of Characters Allowed (3).
+[  33]    03A3: 00                                    db  ?           ;Number of Characters Entered by User.
+[  34]    03A4: 00 00 00                              db  3 dup(0)    ;Characters Entered by User.
+[  35]        :                                       
+[  36]    03A7: 04                                    ID          db  4
+[  37]    03A8: 00                                    db  ?
+[  38]    03A9: 00 00 00 00                           db  4 dup(0)
+[  39]        :                                       
+[  40]    03AD: 00 00 00 00 00 00 00 00 00 00 00 00   grades DB 255 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00                            
+[  41]        :                                       
+[  42]        :                                       .CODE
+[  43]    04B0: B8 10 00                              mov AX, @DATA
+[  44]    04B3: 8E D8                                 mov DS, AX
+[  45]        :                                       
+[  46]    04B5: B4 3D                                 mov ah,3dh
+[  47]    04B7: B0 00                                 mov al,0
+[  48]    04B9: BA 8F 02                              MOV DX, OFFSET(fname)
+[  49]    04BC: CD 21                                 int 21h
+[  50]    04BE: A3 9D 02                              mov fhand, ax
+[  51]    04C1: BE AD 02                              mov si,OFFSET grades
+[  52]        :                                       
+[  53]    04C4:                                       loadagain:
+[  54]    04C4: 33 C0                                 XOR AX, AX
+[  55]    04C6: B4 3F                                 mov ah,3fh
+[  56]    04C8: 8B 1E 9D 02                           mov bx,fhand
+[  57]    04CC: B9 01 00                              mov cx, 1
+[  58]    04CF: 8D 14                                 lea dx, [si]
+[  59]    04D1: CD 21                                 int 21h
+[  60]    04D3: 80 2C 30                              SUB [si], 48
+[  61]    04D6: 3D 00 00                              cmp ax, 0
+[  62]    04D9: 74 03                                 JE @Main_func
+[  63]    04DB: 46                                    INC SI
+[  64]    04DC: EB E6                                 JMP loadagain
+[  65]        :                                       
+[  66]    04DE:                                       @Main_func:
+[  67]    04DE: 50 56 EB 03 0D 0A 00 BE 32 00 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[  68]    04F8: B4 09                                 MOV AH, 09H
+[  69]    04FA: BA 00 00                              MOV DX, OFFSET msg1
+[  70]    04FD: CD 21                                 INT 21H
+[  71]    04FF: BA 1C 00                              MOV DX, OFFSET msg2
+[  72]    0502: CD 21                                 INT 21H
+[  73]    0504: BA 4A 00                              MOV DX, OFFSET msg4
+[  74]    0507: CD 21                                 INT 21H
+[  75]    0509: BA 6A 00                              MOV DX, OFFSET msg5
+[  76]    050C: CD 21                                 INT 21H
+[  77]    050E: BA 84 00                              MOV DX, OFFSET msg10
+[  78]    0511: CD 21                                 INT 21H
+[  79]    0513: 50 56 EB 03 0D 0A 00 BE 67 00 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[  80]        :                                       
+[  81]    052D:                                       Enter_choice:
+[  82]    052D: 50 56 EB 28 2D 2D 3E 20 45 6E 74 65   PRINT "--> Enter a valid choice of the above: "
+                72 20 61 20 76 61 6C 69 64 20 63 68 
+                6F 69 63 65 20 6F 66 20 74 68 65 20 
+                61 62 6F 76 65 3A 20 00 BE 81 00 2E 
+                8A 04 3C 00 74 07 46 B4 0E CD 10 EB 
+                F2 5E 58                            
+[  83]    056C: B4 01                                 mov ah, 1
+[  84]    056E: CD 21                                 int 21h
+[  85]    0570: 3C 31                                 cmp al, '1'
+[  86]    0572: 73 23                                 jae Second_cmp1
+[  87]    0574: BA F2 00                              lea dx, msg12
+[  88]    0577: B4 09                                 mov ah, 9
+[  89]    0579: CD 21                                 int 21h
+[  90]    057B: 50 56 EB 03 0D 0A 00 BE CF 00 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[  91]    0595: EB 96                                 jmp Enter_choice
+[  92]        :                                       
+[  93]    0597:                                       Second_cmp1:
+[  94]    0597: 3C 35                                 cmp al, '5'
+[  95]    0599: 76 24                                 jbe valid_choice
+[  96]    059B: BA F2 00                              lea dx, msg12
+[  97]    059E: B4 09                                 mov ah, 9
+[  98]    05A0: CD 21                                 int 21h
+[  99]    05A2: 50 56 EB 03 0D 0A 00 BE F6 00 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[ 100]    05BC: E9 6E FF                              jmp Enter_choice
+[ 101]        :                                       
+[ 102]    05BF:                                       valid_choice:
+[ 103]    05BF: 3C 31                                 cmp al, '1'
+[ 104]    05C1: 74 1C                                 je @Add_Edit
+[ 105]    05C3: 3C 32                                 cmp al, '2'
+[ 106]    05C5: 75 03 E9 11 02                        je @Search
+[ 107]    05CA: 3C 33                                 cmp al, '3'
+[ 108]    05CC: 75 03 E9 4F 03                        je @Display
+[ 109]    05D1: 3C 34                                 cmp al, '4'
+[ 110]    05D3: 75 03 E9 DD 03                        je @Remove_student
+[ 111]    05D8: 3C 35                                 cmp al, '5'
+[ 112]    05DA: 75 03 E9 DC 03                        je @End_program
+[ 113]        :                                       
+[ 114]        :                                       
+[ 115]    05DF:                                       @Add_Edit:
+[ 116]    05DF: 50 56 EB 03 0D 0A 00 BE 33 01 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[ 117]    05F9: 50 56 EB 1A 45 6E 74 65 72 20 4E 65   PRINT "Enter New Student Grade: "
+                77 20 53 74 75 64 65 6E 74 20 47 72 
+                61 64 65 3A 20 00 BE 4D 01 2E 8A 04 
+                3C 00 74 07 46 B4 0E CD 10 EB F2 5E 
+                58                                  
+[ 118]        :                                       ;Capture String From Keyboard.
+[ 119]    062A: B4 0A                                 mov ah, 0Ah                 ;Service to Capture String from Keyboard.
+[ 120]    062C: BA A2 02                              mov dx, offset New_Grade
+[ 121]    062F: CD 21                                 int 21h
+[ 122]    0631: 50 56 EB 03 0D 0A 00 BE 85 01 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[ 123]    064B: 50 56 EB 17 45 6E 74 65 72 20 4E 65   PRINT "Enter New Student ID: "
+                77 20 53 74 75 64 65 6E 74 20 49 44 
+                3A 20 00 BE 9F 01 2E 8A 04 3C 00 74 
+                07 46 B4 0E CD 10 EB F2 5E 58       
+[ 124]        :                                       ;Capture String From Keyboard.
+[ 125]    0679: B4 0A                                 mov ah, 0Ah                 ;Service to Capture String from Keyboard.
+[ 126]    067B: BA A7 02                              mov dx, offset ID
+[ 127]    067E: CD 21                                 int 21h
+[ 128]    0680: 50 56 EB 03 0D 0A 00 BE D4 01 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[ 129]    069A: BE A3 02                              mov si, offset New_Grade + 1    ;Number Of Characters Entered
+[ 130]    069D: 8A 0C                                 mov cl, [si]                    ;Move Length to Cl.
+[ 131]    069F: B5 00                                 mov ch,0                       ;Cear Ch to use Cx.
+[ 132]    06A1: 88 0E 9F 02                           mov Grade_Length, cl
+[ 133]    06A5: BE 00 00                              mov si, 0
+[ 134]    06A8: 8B D9                                 mov bx,cx
+[ 135]        :                                       
+[ 136]    06AA:                                       lab1:                                ; Compare Bl With Ascii Value of 01
+[ 137]    06AA: 80 BC A4 02 30                        cmp New_Grade[2][si], 030h
+[ 138]    06AF: 7E 6F                                 jle EndPrgm_1
+[ 139]    06B1: 46                                    inc si
+[ 140]    06B2: E2 F6                                 loop lab1
+[ 141]    06B4: BE 00 00                              mov si, 0
+[ 142]    06B7: 8B CB                                 mov cx,bx
+[ 143]        :                                       
+[ 144]    06B9:                                       lab2:                                ; Compare Bl With Ascii Value of 09
+[ 145]    06B9: 80 BC A4 02 39                        cmp New_Grade[2][si], 039h
+[ 146]    06BE: 7F 60                                 jg EndPrgm_1
+[ 147]    06C0: 46                                    inc si
+[ 148]    06C1: E2 F6                                 loop lab2
+[ 149]    06C3: 8B CB                                 mov cx,bx
+[ 150]    06C5: BE 00 00                              mov si, 0
+[ 151]        :                                       ; convert the 'char digit' to 'intger digit' by sub 48 from it
+[ 152]    06C8:                                       lab3:
+[ 153]    06C8: 8A 94 A4 02                           mov dl, New_Grade[2][si]
+[ 154]    06CC: 80 EA 30                              sub dl, 48
+[ 155]    06CF: 88 94 A4 02                           mov New_Grade[2][si], dl
+[ 156]    06D3: 46                                    inc si
+[ 157]    06D4: E2 F2                                 loop lab3
+[ 158]    06D6: BE A8 02                              mov si, offset ID + 1           ;Number Of Characters Entered
+[ 159]    06D9: 8A 0C                                 mov cl, [si]                    ;Move Length to Cl.
+[ 160]    06DB: B5 00                                 mov ch,0                        ;Cear Ch to use Cx.
+[ 161]    06DD: 88 0E A0 02                           mov ID_Length, cl               ;Cear Ch to use Cx.
+[ 162]        :                                       
+[ 163]    06E1: BE 00 00                              mov si, 0
+[ 164]    06E4: B5 00                                 mov ch, 0
+[ 165]    06E6: 8A 0E A0 02                           mov cl,ID_Length
+[ 166]        :                                       
+[ 167]    06EA:                                       lab4:
+[ 168]    06EA: 80 BC A9 02 29                        cmp ID[2][si], 029h     ; Compare Bl With Ascii Value of 01
+[ 169]    06EF: 7E 2F                                 jle EndPrgm_1
+[ 170]    06F1: 46                                    inc si
+[ 171]    06F2: E2 F6                                 loop lab4
+[ 172]        :                                       
+[ 173]    06F4: BE 00 00                              mov si, 0
+[ 174]    06F7: B5 00                                 mov ch, 0
+[ 175]    06F9: 8A 0E A0 02                           mov cl,ID_Length
+[ 176]        :                                       
+[ 177]    06FD:                                       lab5:
+[ 178]    06FD: 80 BC A9 02 39                        cmp ID[2][si], 039h     ; Compare Bl With Ascii Value of 09
+[ 179]    0702: 7F 1C                                 jg EndPrgm_1
+[ 180]    0704: 46                                    inc si
+[ 181]    0705: E2 F6                                 loop lab5
+[ 182]        :                                       
+[ 183]    0707: BE 00 00                              mov si, 0
+[ 184]    070A: B5 00                                 mov ch, 0
+[ 185]    070C: 8A 0E A0 02                           mov cl,ID_Length
+[ 186]        :                                       
+[ 187]    0710:                                       lab6:
+[ 188]    0710: 8A 94 A9 02                           mov dl, ID[2][si]
+[ 189]    0714: 80 EA 30                              sub dl,48
+[ 190]    0717: 88 94 A9 02                           mov ID[2][si], dl
+[ 191]    071B: 46                                    inc si
+[ 192]    071C: E2 F2                                 loop lab6
+[ 193]        :                                       
+[ 194]    071E: EB 3C                                 jmp dowork_1
+[ 195]        :                                       
+[ 196]        :                                       
+[ 197]    0720:                                       EndPrgm_1:
+[ 198]    0720: 50 56 EB 22 57 72 6F 6E 67 20 56 61   PRINTN "Wrong Value ! Please Try Again!"
+                6C 75 65 20 21 20 50 6C 65 61 73 65 
+                20 54 72 79 20 41 67 61 69 6E 21 0D 
+                0A 00 BE 74 02 2E 8A 04 3C 00 74 07 
+                46 B4 0E CD 10 EB F2 5E 58          
+[ 199]    0759: E9 82 FD                              JMP @Main_func
+[ 200]        :                                       
+[ 201]    075C:                                       dowork_1:
+[ 202]    075C: B8 01 00                              mov ax,1
+[ 203]    075F: 8A 0E A0 02                           mov cl,ID_Length
+[ 204]    0763: B5 00                                 mov ch,0
+[ 205]    0765: B3 0A                                 mov bl,10
+[ 206]        :                                       
+[ 207]    0767: 80 F9 01                              cmp cl,1
+[ 208]    076A: 74 0A                                 je lab8
+[ 209]    076C: 80 E9 01                              sub cl,1
+[ 210]        :                                       
+[ 211]    076F: 51                                    push cx
+[ 212]        :                                       ; 10^x, to transfer the "string" input to real integer value
+[ 213]    0770:                                       lab7:
+[ 214]    0770: F6 E3                                 mul bl
+[ 215]    0772: E2 FC                                 loop lab7
+[ 216]    0774: 59                                    pop cx
+[ 217]    0775: 41                                    inc cx
+[ 218]    0776:                                       lab8:
+[ 219]    0776: BE 00 00                              mov si,0
+[ 220]    0779: BA 00 00                              mov dx ,0
+[ 221]        :                                       
+[ 222]        :                                       ; calculate the ID by multiply each index by 10 power it's weight value
+[ 223]    077C:                                       get_id_1:
+[ 224]    077C: 50                                    push ax
+[ 225]    077D: F6 A4 A9 02                           mul ID[2][si]
+[ 226]    0781: 02 D0                                 add dl,al
+[ 227]    0783: 58                                    pop ax
+[ 228]    0784: F6 F3                                 div bl
+[ 229]    0786: 46                                    inc si
+[ 230]    0787: E2 F3                                 loop get_id_1
+[ 231]        :                                       
+[ 232]        :                                       ; Get the Exact ID's index according to our gradesay of bytes
+[ 233]    0789: 8A C2                                 mov al, dl
+[ 234]    078B: B2 03                                 mov dl,03
+[ 235]    078D: F6 E2                                 mul dl
+[ 236]    078F: 2C 03                                 sub al,03
+[ 237]        :                                       
+[ 238]    0791: 80 3E 9F 02 01                        cmp Grade_Length,1
+[ 239]    0796: 74 17                                 je lab10
+[ 240]    0798: 75 00                                 jne lab9
+[ 241]        :                                       
+[ 242]    079A:                                       lab9:
+[ 243]    079A: B4 00                                 mov ah,0
+[ 244]    079C: 8B F0                                 mov si, ax
+[ 245]    079E: A0 A4 02                              mov al,New_Grade[2][0]
+[ 246]    07A1: 88 84 AD 02                           mov grades[si],al
+[ 247]    07A5: 46                                    inc si
+[ 248]    07A6: A0 A5 02                              mov al, New_Grade[2][1]
+[ 249]    07A9: 88 84 AD 02                           mov grades[si],al
+[ 250]    07AD: EB 14                                 jmp end_1
+[ 251]        :                                       
+[ 252]    07AF:                                       lab10:
+[ 253]    07AF: B4 00                                 mov ah,0
+[ 254]    07B1: 8B F0                                 mov si, ax
+[ 255]    07B3: B0 00                                 mov al,0
+[ 256]    07B5: 88 84 AD 02                           mov grades[si],al
+[ 257]    07B9: 46                                    inc si
+[ 258]    07BA: A0 A4 02                              mov al, New_Grade[2][0]
+[ 259]    07BD: 88 84 AD 02                           mov grades[si],al
+[ 260]    07C1: EB 00                                 jmp end_1
+[ 261]        :                                       
+[ 262]    07C3:                                       end_1:
+[ 263]        :                                       ; Print New Line
+[ 264]    07C3: BA 0D 00                              mov dx,13
+[ 265]    07C6: B4 02                                 mov ah,2
+[ 266]    07C8: CD 21                                 int 21h
+[ 267]    07CA: BA 0A 00                              mov dx,10
+[ 268]    07CD: B4 02                                 mov ah,2
+[ 269]    07CF: CD 21                                 int 21h
+[ 270]    07D1: B4 09                                 mov ah, 09h
+[ 271]    07D3: BA 13 02                              lea dx, Exit
+[ 272]    07D6: CD 21                                 int 21h
+[ 273]    07D8: E9 03 FD                              jmp @Main_func
+[ 274]        :                                       
+[ 275]        :                                       
+[ 276]    07DB:                                       @Search:
+[ 277]        :                                       ;call ID_input_Validation
+[ 278]    07DB: 50 56 EB 03 0D 0A 00 BE 2F 03 2E 8A   PRINTN ""
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[ 279]    07F5: 50 56 EB 15 45 6E 74 65 72 20 53 74   PRINTN "Enter Student ID: "
+                75 64 65 6E 74 20 49 44 3A 20 0D 0A 
+                00 BE 49 03 2E 8A 04 3C 00 74 07 46 
+                B4 0E CD 10 EB F2 5E 58             
+[ 280]        :                                       
+[ 281]        :                                       ;Capture String From Keyboard.
+[ 282]    0821: B4 0A                                 mov ah, 0Ah                 ;Service to Capture String from Keyboard.
+[ 283]    0823: BA A7 02                              mov dx, offset ID
+[ 284]    0826: CD 21                                 int 21h
+[ 285]        :                                       
+[ 286]    0828: BE A8 02                              mov si, offset ID + 1    ;Number Of Characters Entered
+[ 287]    082B: 8A 0C                                 mov cl, [si]                    ;Move Length to Cl.
+[ 288]    082D: B5 00                                 mov ch,0                       ;Cear Ch to use Cx.
+[ 289]    082F: 88 0E A0 02                           mov ID_Length, cl                       ;Cear Ch to use Cx.
+[ 290]        :                                       
+[ 291]    0833: BE 00 00                              mov si, 0
+[ 292]    0836: B5 00                                 mov ch, 0
+[ 293]    0838: 8A 0E A0 02                           mov cl,ID_Length
+[ 294]        :                                       
+[ 295]    083C:                                       labx:
+[ 296]    083C: 80 BC A9 02 29                        cmp ID[2][si], 029h     ; Compare Bl With Ascii Value of 01
+[ 297]    0841: 7E 2F                                 jle end_2
+[ 298]    0843: 46                                    inc si
+[ 299]    0844: E2 F6                                 loop labx
+[ 300]        :                                       
+[ 301]    0846: BE 00 00                              mov si, 0
+[ 302]    0849: B5 00                                 mov ch, 0
+[ 303]    084B: 8A 0E A0 02                           mov cl,ID_Length
+[ 304]        :                                       
+[ 305]    084F:                                       laby:
+[ 306]    084F: 80 BC A9 02 39                        cmp ID[2][si], 039h     ; Compare Bl With Ascii Value of 09
+[ 307]    0854: 7F 1C                                 jg end_2
+[ 308]    0856: 46                                    inc si
+[ 309]    0857: E2 F6                                 loop laby
+[ 310]        :                                       
+[ 311]    0859: BE 00 00                              mov si, 0
+[ 312]    085C: B5 00                                 mov ch, 0
+[ 313]    085E: 8A 0E A0 02                           mov cl,ID_Length
+[ 314]        :                                       
+[ 315]        :                                       ; convert the 'char digit' to 'intger digit' by sub 48 from it
+[ 316]    0862:                                       labz:
+[ 317]    0862: 8A 94 A9 02                           mov dl, ID[2][si]
+[ 318]    0866: 80 EA 30                              sub dl,48
+[ 319]    0869: 88 94 A9 02                           mov ID[2][si], dl
+[ 320]    086D: 46                                    inc si
+[ 321]    086E: E2 F2                                 loop labz
+[ 322]        :                                       
+[ 323]    0870: EB 0B                                 jmp dowork_2
+[ 324]        :                                       
+[ 325]        :                                       
+[ 326]    0872:                                       end_2:
+[ 327]    0872: B4 09                                 mov ah, 09h
+[ 328]    0874: BA F5 01                              lea dx, Exit_Msg
+[ 329]    0877: CD 21                                 int 21h
+[ 330]    0879: B4 4C                                 mov ah,0x4C     ;DOS "terminate" function
+[ 331]    087B: CD 21                                 int 0x21
+[ 332]        :                                       
+[ 333]    087D:                                       dowork_2:
+[ 334]        :                                       ; Get the Exact ID's index according to our gradesay of bytes
+[ 335]    087D: B8 01 00                              mov ax,1
+[ 336]    0880: 8A 0E A0 02                           mov cl,ID_Length
+[ 337]    0884: B5 00                                 mov ch,0
+[ 338]    0886: B3 0A                                 mov bl,10
+[ 339]        :                                       
+[ 340]    0888: 80 F9 01                              cmp cl,1
+[ 341]    088B: 74 0A                                 je labb
+[ 342]    088D: 80 E9 01                              sub cl,1
+[ 343]        :                                       
+[ 344]        :                                       ; 10^x, to transfer the "string" input to real integer value
+[ 345]    0890: 51                                    push cx
+[ 346]    0891:                                       laba:
+[ 347]    0891: F6 E3                                 mul bl
+[ 348]    0893: E2 FC                                 loop laba
+[ 349]        :                                       
+[ 350]    0895: 59                                    pop cx
+[ 351]    0896: 41                                    inc cx
+[ 352]        :                                       
+[ 353]    0897:                                       labb:
+[ 354]    0897: BE 00 00                              mov si,0
+[ 355]    089A: BA 00 00                              mov dx ,0
+[ 356]        :                                       
+[ 357]        :                                       ; calculate the ID by multiply each index by 10 power it's weight value
+[ 358]    089D:                                       get_id_2:
+[ 359]    089D: 50                                    push ax
+[ 360]    089E: F6 A4 A9 02                           mul ID[2][si]
+[ 361]        :                                       
+[ 362]    08A2: 02 D0                                 add dl,al
+[ 363]    08A4: 58                                    pop ax
+[ 364]    08A5: F6 F3                                 div bl
+[ 365]    08A7: 46                                    inc si
+[ 366]        :                                       
+[ 367]    08A8: E2 F3                                 loop get_id_2
+[ 368]        :                                       
+[ 369]    08AA: 88 16 A1 02                           mov ID_Value,dl
+[ 370]    08AE: 8A C2                                 mov al,dl
+[ 371]    08B0: B2 03                                 mov dl,03
+[ 372]    08B2: F6 E2                                 mul dl
+[ 373]    08B4: 2C 03                                 sub al,03
+[ 374]        :                                       
+[ 375]    08B6: B4 00                                 mov ah,0
+[ 376]        :                                       
+[ 377]    08B8: 8B F0                                 mov si, ax
+[ 378]        :                                       
+[ 379]    08BA: BB 00 00                              mov bx,0
+[ 380]    08BD: 8A 9C AD 02                           mov bl,grades[si]
+[ 381]    08C1: 46                                    inc si
+[ 382]    08C2: 8A BC AD 02                           mov bh,grades[si]
+[ 383]    08C6: EB 00                                 jmp end_3
+[ 384]        :                                       
+[ 385]    08C8:                                       end_3:
+[ 386]        :                                       ; Print New Line
+[ 387]    08C8: BA 0D 00                              mov dx,13
+[ 388]    08CB: B4 02                                 mov ah,2
+[ 389]    08CD: CD 21                                 int 21h
+[ 390]    08CF: BA 0A 00                              mov dx,10
+[ 391]    08D2: B4 02                                 mov ah,2
+[ 392]    08D4: CD 21                                 int 21h
+[ 393]        :                                       
+[ 394]    08D6: 8A C8                                 mov cl,al
+[ 395]    08D8: 8A EC                                 mov ch,ah
+[ 396]        :                                       ; Print Message Num1
+[ 397]    08DA: B4 09                                 mov ah,09h
+[ 398]    08DC: BA 3A 02                              lea dx,St_ID1
+[ 399]    08DF: CD 21                                 int 21h
+[ 400]        :                                       
+[ 401]    08E1: B4 02                                 mov ah, 02h      ;DOS Character Output
+[ 402]    08E3: 8A 16 A1 02                           mov dl, ID_Value
+[ 403]    08E7: 80 C2 30                              add dl,48
+[ 404]    08EA: CD 21                                 int 21h
+[ 405]        :                                       
+[ 406]        :                                       ; Print Message Num2
+[ 407]    08EC: BA 0D 00                              mov dx,13
+[ 408]    08EF: B4 09                                 mov ah,09h
+[ 409]    08F1: BA 50 02                              lea dx,St_ID2
+[ 410]    08F4: CD 21                                 int 21h
+[ 411]        :                                       
+[ 412]    08F6: B4 02                                 mov ah, 02h      ;DOS Character Output
+[ 413]    08F8: 8A D3                                 mov dl, bl
+[ 414]    08FA: 80 C2 30                              add dl,48
+[ 415]    08FD: CD 21                                 int 21h
+[ 416]    08FF: B4 02                                 mov ah, 02h      ;DOS Character Output
+[ 417]    0901: 8A D7                                 mov dl, bh
+[ 418]    0903: 80 C2 30                              add dl,48
+[ 419]    0906: CD 21                                 int 21h
+[ 420]        :                                       
+[ 421]        :                                       ; Print New Line
+[ 422]    0908: BA 0D 00                              mov dx,13
+[ 423]    090B: B4 02                                 mov ah,2
+[ 424]    090D: CD 21                                 int 21h
+[ 425]    090F: BA 0A 00                              mov dx,10
+[ 426]    0912: B4 02                                 mov ah,2
+[ 427]    0914: CD 21                                 int 21h
+[ 428]        :                                       
+[ 429]    0916: B4 09                                 mov ah, 09h
+[ 430]    0918: BA 13 02                              lea dx, Exit
+[ 431]    091B: CD 21                                 int 21h
+[ 432]    091D: E9 BE FB                              jmp @Main_func
+[ 433]        :                                       
+[ 434]        :                                       
+[ 435]    0920:                                       @Display:
+[ 436]    0920: BF 55 00                              MOV di, 85   ; set the loop iterations
+[ 437]    0923: BE AD 02                              LEA SI, grades        ; load addres of the gradesay of students   ;should be in ASCII
+[ 438]    0926: B9 01 00                              mov cx, 1
+[ 439]        :                                       
+[ 440]        :                                       
+[ 441]    0929:                                       next_value:
+[ 442]    0929: 8A 14                                 MOV DL, [SI]
+[ 443]    092B: 8A 74 01                              MOV DH, [SI+1]
+[ 444]    092E: 83 FA 00                              CMP DX, 0
+[ 445]    0931: 74 72                                 JE continue
+[ 446]    0933: E8 D7 00                              CALL New_line
+[ 447]    0936: 50 56 EB 13 74 68 65 20 73 74 75 64   print "the student id => "
+                65 6E 74 20 69 64 20 3D 3E 20 00 BE 
+                8A 04 2E 8A 04 3C 00 74 07 46 B4 0E 
+                CD 10 EB F2 5E 58                   
+[ 448]        :                                       ; handle multiple id digits ;
+[ 449]    0960: 8B D1                                 mov dx, cx
+[ 450]    0962: 83 C2 30                              add dx, 48
+[ 451]    0965: B4 02                                 mov AH, 2
+[ 452]    0967: CD 21                                 int 21h
+[ 453]        :                                       ; end ;
+[ 454]    0969: 50 56 EB 0F 20 68 69 73 20 67 72 61   print " his grade => "
+                64 65 20 3D 3E 20 00 BE BD 04 2E 8A 
+                04 3C 00 74 07 46 B4 0E CD 10 EB F2 
+                5E 58                               
+[ 455]    098F: 8B 14                                 MOV dx,[SI]
+[ 456]    0991: 83 C2 30                              add dx, 48               ; get value from the gradesay
+[ 457]    0994: B4 02                                 mov AH, 02h
+[ 458]    0996: CD 21                                 int 21h
+[ 459]    0998: 8B 54 01                              MOV dx,[SI+1]
+[ 460]    099B: 83 C2 30                              add dx, 48               ; get value from the gradesay
+[ 461]    099E: B4 02                                 mov AH, 02h
+[ 462]    09A0: CD 21                                 int 21h                        ;print it   what SI point to
+[ 463]    09A2: E8 68 00                              CALL New_line
+[ 464]    09A5:                                       continue:
+[ 465]    09A5: 4F                                    dec di
+[ 466]    09A6: 41                                    inc cx
+[ 467]    09A7: 83 C6 03                              add si, 3
+[ 468]    09AA: 83 FF 00                              cmp di, 0                     ; next word
+[ 469]    09AD: 74 03 E9 77 FF                        JNZ next_value             ; CX++
+[ 470]    09B2: E9 29 FB                              jmp @Main_func
+[ 471]        :                                       
+[ 472]        :                                       
+[ 473]    09B5:                                       @Remove_student:
+[ 474]    09B5: E8 3C 00                              call ID_input_Validation
+[ 475]        :                                       ;// code
+[ 476]    09B8: E9 23 FB                              jmp @Main_func
+[ 477]        :                                       
+[ 478]        :                                       
+[ 479]    09BB:                                       @End_program:
+[ 480]    09BB: E8 5C 00                              CALL Open
+[ 481]        :                                       
+[ 482]    09BE: BE 00 00                              MOV SI, 0
+[ 483]    09C1: BF FF 00                              MOV DI, 255
+[ 484]        :                                       
+[ 485]    09C4:                                       loopgrades:
+[ 486]    09C4: 83 FF 00                              CMP DI, 0
+[ 487]    09C7: 74 24                                 JZ  endloop
+[ 488]    09C9: 8A 84 AD 02                           MOV AL, grades[SI]
+[ 489]    09CD: B4 40                                 MOV AH, 40H
+[ 490]    09CF: 8B 1E 9D 02                           MOV BX, fhand
+[ 491]    09D3: B9 01 00                              MOV CX, 1
+[ 492]    09D6: 3C 20                                 CMP AL, ' '
+[ 493]    09D8: 74 0A                                 JZ takespace
+[ 494]    09DA: 04 30                                 ADD AL, 48
+[ 495]    09DC: A2 9B 02                              MOV OFFSET(digit), AL
+[ 496]    09DF: BA 9B 02                              MOV DX, OFFSET(digit)
+[ 497]    09E2: EB 03                                 JMP CONT
+[ 498]    09E4:                                       takespace:
+[ 499]    09E4: BA 9C 02                              MOV DX, OFFSET(space)
+[ 500]    09E7:                                       CONT:
+[ 501]    09E7: CD 21                                 INT 21H
+[ 502]    09E9: 46                                    INC SI
+[ 503]    09EA: 4F                                    DEC DI
+[ 504]    09EB: EB D7                                 JMP loopgrades
+[ 505]        :                                       
+[ 506]    09ED:                                       endloop:
+[ 507]    09ED: E8 37 00                              CALL Close
+[ 508]        :                                       
+[ 509]    09F0: B4 4C                                 mov ah, 04ch
+[ 510]    09F2: CD 21                                 int 21h
+[ 511]        :                                       
+[ 512]    09F4:                                       ID_input_Validation proc near
+[ 513]    09F4: BA 78 01                              INPUT: lea dx, msg8
+[ 514]    09F7: B4 09                                 mov ah, 9
+[ 515]    09F9: CD 21                                 int 21h
+[ 516]    09FB: E8 35 00                              call SCAN_NUM
+[ 517]    09FE: 83 F9 00                              cmp cx, 0h
+[ 518]    0A01: 73 02                                 jae Second_cmp3
+[ 519]    0A03: EB EF                                 jmp INPUT
+[ 520]        :                                       
+[ 521]    0A05:                                       Second_cmp3:
+[ 522]    0A05: 83 F9 FF                              cmp cx, 0ffffh
+[ 523]    0A08: 76 02                                 jbe END_proc
+[ 524]    0A0A: EB E8                                 jmp INPUT
+[ 525]        :                                       
+[ 526]    0A0C:                                       END_proc:
+[ 527]    0A0C: C3                                    ret
+[ 528]        :                                       ID_input_Validation endp
+[ 529]        :                                       
+[ 530]    0A0D:                                       New_line proc
+[ 531]        :                                       
+[ 532]    0A0D: B2 0A                                 MOV DL, 0AH               ; New line
+[ 533]    0A0F: B4 02                                 MOV AH, 02H
+[ 534]    0A11: CD 21                                 INT 21H
+[ 535]    0A13: B2 0D                                 MOV DL, 0DH
+[ 536]    0A15: B4 02                                 MOV AH, 02H
+[ 537]    0A17: CD 21                                 INT 21H
+[ 538]        :                                       
+[ 539]        :                                       New_line ENDP
+[ 540]    0A19: C3                                    ret
+[ 541]        :                                       
+[ 542]    0A1A:                                       Open PROC
+[ 543]    0A1A: B4 3D                                 MOV AH, 3DH
+[ 544]    0A1C: BA 8F 02                              MOV DX, OFFSET(fname)
+[ 545]    0A1F: B0 01                                 MOV AL, 1
+[ 546]    0A21: CD 21                                 INT 21H
+[ 547]    0A23: A3 9D 02                              MOV fhand, AX
+[ 548]        :                                       Open ENDP
+[ 549]    0A26: C3                                    RET
+[ 550]        :                                       
+[ 551]    0A27:                                       Close PROC
+[ 552]    0A27: B4 3E                                 MOV AH, 3EH
+[ 553]    0A29: 8B 16 9D 02                           MOV DX, fhand
+[ 554]    0A2D: CD 21                                 INT 21H
+[ 555]        :                                       Close ENDP
+[ 556]    0A2F: C3                                    RET
+[ 557]        :                                       
+[ 558]        :                                       
+[ 559]    0A30: E9 C3 00 52 50 56 B9 00 00 2E C6 06   DEFINE_SCAN_NUM
+                43 06 00 B4 00 CD 16 B4 0E CD 10 3C 
+                2D 74 69 3C 0D 75 03 E9 93 00 3C 08 
+                75 1E BA 00 00 8B C1 2E F7 36 44 06 
+                8B C8 50 B0 20 B4 0E CD 10 58 50 B0 
+                08 B4 0E CD 10 58 EB CB 3C 30 73 02 
+                EB 04 3C 39 76 1A 50 B0 08 B4 0E CD 
+                10 58 50 B0 20 B4 0E CD 10 58 50 B0 
+                08 B4 0E CD 10 58 EB A7 50 8B C1 2E 
+                F7 26 44 06 8B C8 58 83 FA 00 75 19 
+                2C 30 B4 00 8B D1 03 C8 72 0A EB 8B 
+                2E C6 06 43 06 01 EB 83 8B CA BA 00 
+                00 8B C1 2E F7 36 44 06 8B C8 50 B0 
+                08 B4 0E CD 10 58 50 B0 20 B4 0E CD 
+                10 58 50 B0 08 B4 0E CD 10 58 E9 5A 
+                FF 2E 80 3E 43 06 00 74 02 F7 D9 5E 
+                58 5A C3 00 0A 00                   
+[ 560]    0AF6: EB 50 50 53 51 52 B9 01 00 BB 10 27   DEFINE_PRINT_NUM_UNS
+                3D 00 00 74 32 83 FB 00 74 35 83 F9 
+                00 74 04 3B C3 72 14 B9 00 00 BA 00 
+                00 F7 F3 04 30 50 8A C0 B4 0E CD 10 
+                58 8B C2 50 BA 00 00 8B C3 2E F7 36 
+                96 06 8B D8 58 EB CE 50 B0 30 B4 0E 
+                CD 10 58 5A 59 5B 58 C3 0A 00       
+[ 561]    0B48: EB 26 52 50 3D 00 00 75 0A 50 B0 30   DEFINE_PRINT_NUM
+                B4 0E CD 10 58 EB 12 3D 00 00 79 0A 
+                F7 D8 50 B0 2D B4 0E CD 10 58 E8 8B 
+                FF 58 5A C3                         
+[ 562]        :                                       END
+[ 563]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 70      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 07      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 83      -   check sum (l.byte)
+0013: 23      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 4B      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 4B      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================
