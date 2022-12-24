@@ -274,10 +274,8 @@ include 'emu8086.inc'
      
 
      @Search:
-        ;call ID_input_Validation
         PRINTN ""
         PRINTN "Enter Student ID: "   
-        
                                     ;Capture String From Keyboard.                                    
         mov ah, 0Ah                 ;Service to Capture String from Keyboard.
         mov dx, offset ID
@@ -318,11 +316,9 @@ include 'emu8086.inc'
         sub dl,48
         mov ID[2][si], dl
         inc si
-        loop labz
-        
+        loop labz 
         jmp dowork_2
      
-
     end_2:
         mov ah, 09h
         lea dx, Exit_Msg
@@ -336,7 +332,6 @@ include 'emu8086.inc'
         mov cl,ID_Length
         mov ch,0
         mov bl,10
-
         cmp cl,1
         je labb
         sub cl,1
@@ -346,7 +341,6 @@ include 'emu8086.inc'
     laba:
         mul bl
         loop laba
-       
         pop cx
         inc cx
          
@@ -363,7 +357,6 @@ include 'emu8086.inc'
         pop ax
         div bl
         inc si
-    
         loop get_id_2
         
         mov ID_Value,dl
@@ -373,7 +366,6 @@ include 'emu8086.inc'
         sub al,03
         
         mov ah,0
-        
         mov si, ax
                    
         mov bx,0
@@ -444,14 +436,11 @@ include 'emu8086.inc'
         CMP DX, 0
         JE continue 
         CALL New_line
-        print "the student id => "  
-        ; handle multiple id digits ;
-        mov dx, cx  
-        add dx, 48
-        mov AH, 2
-        int 21h 
-        ; end ;
-        print " his grade => "
+        PRINT "the student id => "
+        XOR AX, AX  
+        MOV AX, CX
+        CALL PRINT_NUM 
+        PRINT " his grade => "   
         MOV dx,[SI]
         add dx, 48               ; get value from the gradesay
         mov AH, 02h
@@ -459,68 +448,61 @@ include 'emu8086.inc'
         MOV dx,[SI+1]
         add dx, 48               ; get value from the gradesay
         mov AH, 02h
-        int 21h                        ;print it   what SI point to
-        CALL New_line
+        int 21h    
         continue:
             dec di 
             inc cx
             add si, 3
-            cmp di, 0
-                                   ; next word
-        JNZ next_value             ; CX++
-        mov ah, 4ch
-        int 21h
+            cmp di, 0                     ; next word
+            JNZ next_value             ; CX++
         jmp @Main_func
         
         
      @Remove_student:
-        call ID_input_Validation 
-        ;// code
+        PRINT "Enter Student Id : "
+        CALL SCAN_NUM
+        mov bx, cx
+        LEA SI, grades 
+        MOV AX, 3
+        MUL BX
+        SUB AX, 3
+        MOV BX, AX
+        mov [SI+bx], 0
+        mov [SI+bx+1], 0
+        printn "Student deleted successfully!"
         jmp @Main_func
         
-        
      @End_program:
-          lea dx, msg11
-          mov ah, 9
-          int 21h
-          mov ah, 1
-          int 21h
-          cmp al, 'y'
-          je @Main_func
-          jne Else_if
-          Else_if:
-              cmp al, 'Y'
-              je @Main_func
-              jne Else
-          ELSE:
-              CALL Open
-        
-                MOV SI, 0     
-                MOV DI, 255
+          CALL Open
+    
+            MOV SI, 0     
+            MOV DI, 255
+            
+            loopgrades:
+                CMP DI, 0
+                JZ  endloop 
+                MOV AL, grades[SI] 
+                MOV AH, 40H
+                MOV BX, fhand
+                MOV CX, 1 
+                CMP AL, ' ' 
+                JZ takespace
+                    ADD AL, 48 
+                    MOV OFFSET(digit), AL 
+                    MOV DX, OFFSET(digit)
+                    JMP CONT 
+                takespace:
+                    MOV DX, OFFSET(space)
+                CONT: 
+                    INT 21H
+                    INC SI 
+                    DEC DI 
+                    JMP loopgrades
                 
-                loopgrades:
-                    CMP DI, 0
-                    JZ  endloop 
-                    MOV AL, grades[SI] 
-                    MOV AH, 40H
-                    MOV BX, fhand
-                    MOV CX, 1 
-                    CMP AL, ' ' 
-                    JZ takespace
-                        ADD AL, 48 
-                        MOV OFFSET(digit), AL 
-                        MOV DX, OFFSET(digit)
-                        JMP CONT 
-                    takespace:
-                        MOV DX, OFFSET(space)
-                    CONT: 
-                        INT 21H
-                        INC SI 
-                        DEC DI 
-                        JMP loopgrades
-                    
-                endloop:     
-                    CALL Close
+            endloop:     
+                CALL Close  
+            PRINTN ""
+            PRINTN "Program Saved Students Grades Successfully ! Good Bye"
           
           mov ah, 04ch
           int 21h
@@ -571,7 +553,6 @@ Close PROC
 Close ENDP
 RET
         
-     
      DEFINE_SCAN_NUM
      DEFINE_PRINT_NUM_UNS
      DEFINE_PRINT_NUM              
